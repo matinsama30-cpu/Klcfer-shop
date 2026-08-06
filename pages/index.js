@@ -1,7 +1,3 @@
-<function_calls>
-
-<invoke name="file_new">
-
 <parameter name="path">/tmp/vercel-setup/pages/index.js</parameter>
 
 <parameter name="content">import { useState, useEffect } from 'react';
@@ -302,9 +298,3 @@ export default function Home() {
   );
 
 }
-
-</parameter>
-
-</invoke>
-
-</function_calls>
