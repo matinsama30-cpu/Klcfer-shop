@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KLCFER - فروشگاه اکسسوری</title>
+  <style>
+    /* ---------- Reset & Base ---------- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Vazir', 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* ---------- Navbar ---------- */
+    .navbar {
+      background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      color: white;
+      padding: 15px 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .navbar .container { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .navbar h1 { font-size: 28px; font-weight: 700; display:flex; align-items:center; gap:8px; }
+    .nav-menu { display:flex; gap:18px; align-items:center; flex-wrap:wrap; }
+    .nav-menu a { color:white; text-decoration:none; transition:0.2s; }
+    .nav-menu a:hover { opacity:0.9; transform: translateY(-2px); }
+    .cart-link { position: relative; background: rgba(255,255,255,0.12); padding:8px 12px; border-radius:6px; display:inline-flex; gap:8px; align-items:center; }
+    #cart-count { position:absolute; top:-8px; left:-8px; background:#ff4757; color:white; border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; }
+    /* aria-live region hidden but available for screen readers */
+    #cart-count[aria-hidden="false"] { clip:auto; height:auto; width:auto; }
+
+    /* ---------- Hero ---------- */
+    .hero { background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white; padding:80px 20px; text-align:center; }
+    .hero-content h2 { font-size:42px; margin-bottom:14px; }
+    .hero-content p { font-size:18px; margin-bottom:18px; }
+    .btn {
+      display:inline-block; background:#ff4757; color:white; padding:10px 22px; border-radius:6px; text-decoration:none;
+      transition:0.2s; border:none; cursor:pointer; font-size:15px; font-family:inherit;
+    }
+    .btn:hover { background:#ff3838; transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,0.15); }
+
+    /* ---------- Categories ---------- */
+    .categories { padding:50px 0; background:white; }
+    .categories h3 { text-align:center; font-size:28px; margin-bottom:22px; }
+    .category-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:14px; }
+    .category-card {
+      background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      color:white; padding:22px; border-radius:10px; text-align:center; cursor:pointer; transition:0.2s;
+      box-shadow:0 6px 14px rgba(0,0,0,0.08);
+    }
+    .category-card:hover { transform:translateY(-5px); box-shadow:0 10px 25px rgba(0,0,0,0.14); }
+
+    /* ---------- Products ---------- */
+    .products-section { padding:50px 0; background:white; }
+    .products-section h3 { text-align:center; font-size:28px; margin-bottom:20px; }
+    .products-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap:18px; }
+    .product-card {
+      background:white; border-radius:10px; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,0.06); transition:0.2s; display:flex; flex-direction:column;
+    }
+    .product-card:hover { transform:translateY(-6px); box-shadow:0 12px 30px rgba(0,0,0,0.12); }
+    .product-image { width:100%; height:200px; background:#f0f0f0; display:flex; align-items:center; justify-content:center; font-size:56px; }
+    .product-info { padding:16px; display:flex; flex-direction:column; gap:8px; flex:1; }
+    .product-name { font-size:16px; font-weight:700; }
+    .product-category { color:#666; font-size:13px; }
+    .product-description { color:#666; font-size:14px; line-height:1.4; flex:1; }
+    .product-footer { display:flex; justify-content:space-between; align-items:center; margin-top:8px; gap:8px; }
+    .product-price { font-size:18px; font-weight:800; color:#667eea; }
+    .product-btn { background:#667eea; color:white; border:none; padding:8px 12px; border-radius:6px; cursor:pointer; transition:0.15s; }
+    .product-btn:hover { background:#764ba2; }
+
+    /* ---------- Reviews ---------- */
+    .reviews-section { padding:50px 0; background:#f9f9f9; }
+    .reviews-section h3 { text-align:center; font-size:28px; margin-bottom:18px; }
+    .review-form { background:white; padding:18px; border-radius:10px; margin-bottom:18px; box-shadow:0 6px 14px rgba(0,0,0,0.06); }
+    .form-group { margin-bottom:12px; }
+    .form-group label { display:block; margin-bottom:6px; font-weight:700; }
+    .form-group input, .form-group textarea, .form-group select {
+      width:100%; padding:10px; border:1px solid #e0e0e0; border-radius:8px; font-size:14px; font-family:inherit;
+    }
+    .form-group textarea { min-height:100px; resize:vertical; }
+    .review-item { background:white; padding:14px; border-radius:8px; margin-bottom:12px; border-right:4px solid #667eea; box-shadow:0 3px 10px rgba(0,0,0,0.04); }
+    .review-header { display:flex; justify-content:space-between; margin-bottom:8px; gap:10px; align-items:center; }
+    .review-author { font-weight:700; color:#667eea; }
+    .review-rating { color:#ffb800; font-weight:700; }
+    .review-text { color:#333; line-height:1.5; margin-bottom:6px; }
+    .review-date { color:#999; font-size:12px; }
+
+    /* ---------- Modal (Cart) ---------- */
+    .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.45); display:none; align-items:center; justify-content:center; z-index:200; }
+    .modal-backdrop.open { display:flex; }
+    .modal { background:white; width:95%; max-width:720px; border-radius:10px; padding:18px; box-shadow:0 20px 60px rgba(0,0,0,0.4); max-height:90vh; overflow:auto; direction:rtl; }
+    .modal header { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; }
+    .modal .cart-items { display:flex; flex-direction:column; gap:12px; margin-bottom:12px; }
+    .cart-item { display:flex; gap:12px; align-items:center; border:1px solid #f0f0f0; padding:10px; border-radius:8px; }
+    .cart-item .ci-info { flex:1; }
+    .ci-controls { display:flex; gap:8px; align-items:center; }
+    .qty-btn { background:#eee; border:none; padding:6px 8px; border-radius:6px; cursor:pointer; }
+    .cart-summary { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:12px; }
+    .muted { color:#777; font-size:14px; }
+
+    /* ---------- Toasts ---------- */
+    #toast-container { position:fixed; bottom:20px; left:20px; z-index:400; display:flex; flex-direction:column; gap:10px; align-items:flex-end; }
+    .toast { background:#333; color:white; padding:10px 14px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.2); min-width:200px; }
+    .toast.success { background:#2ecc71; }
+    .toast.error { background:#ff6b6b; }
+
+    /* ---------- Footer ---------- */
+    footer { background:#333; color:white; padding:28px 20px; text-align:center; margin-top:40px; }
+    footer p { margin-bottom:8px; }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 768px) {
+      .hero-content h2 { font-size:28px; }
+      .products-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+      #toast-container { left:12px; right:12px; align-items:center; }
+    }
+  </style>
+</head>
+<body>
+  <noscript>
+    <div style="background:#ffefc2;padding:10px;text-align:center;">برای تجربه بهتر، جاوااسکریپت باید فعال باشد.</div>
+  </noscript>
+
+  <!-- Navbar -->
+  <nav class="navbar" role="navigation" aria-label="ناوبری اصلی">
+    <div class="container">
+      <h1 aria-label="فروشگاه KLCFER"> <span>KLCFER</span></h1>
+      <div class="nav-menu" role="menu">
+        <a href="#home" role="menuitem">خانه</a>
+        <a href="#products" role="menuitem">فروشگاه</a>
+        <button id="open-cart-btn" class="cart-link" type="button" aria-haspopup="dialog" aria-controls="cart-modal">
+          🛒 سبد خرید <span id="cart-count" aria-live="polite" aria-atomic="true">0</span>
+        </button>
+        <a href="#login" role="menuitem">ورود</a>
+        <a href="#admin" role="menuitem">👨‍💼 ادمین</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home" aria-labelledby="hero-title">
+    <div class="hero-content container">
+      <h2 id="hero-title"> Fear Of God</h2>
+      <p>بهترین For you'r style</p>
+      <button class="btn" type="button" id="go-to-products-btn">مشاهده محصولات</button>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories" aria-labelledby="categories-title">
+    <div class="container">
+      <h3 id="categories-title"> دسته‌بندی‌ها</h3>
+      <div class="category-grid" id="categoryGrid"></div>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <section class="products-section" id="products" aria-labelledby="products-title">
+    <div class="container">
+      <h3 id="products-title">🏅 محصولات پرفروش</h3>
+      <div class="products-grid" id="productsContainer" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- Reviews Section -->
+  <section class="reviews-section" aria-labelledby="reviews-title">
+    <div class="container">
+      <h3 id="reviews-title">⭐ نظرات مشتریان</h3>
+
+      <div class="review-form" aria-labelledby="review-form-title">
+        <h4 id="review-form-title" style="margin-bottom:12px;">ثبت نظر خود</h4>
+        <form id="reviewForm" novalidate>
+          <div class="form-group">
+            <label for="reviewName">نام:</label>
+            <input type="text" id="reviewName" name="name" required aria-required="true" />
+          </div>
+          <div class="form-group">
+            <label for="reviewEmail">ایمیل:</label>
+            <input type="email" id="reviewEmail" name="email" required aria-required="true" />
+          </div>
+          <div class="form-group">
+            <label for="reviewRating">امتیاز (1-5):</label>
+            <select id="reviewRating" name="rating" required aria-required="true">
+              <option value="">انتخاب کنید</option>
+              <option value="5">⭐⭐⭐⭐⭐ عالی</option>
+              <option value="4">⭐⭐⭐⭐ خوب</option>
+              <option value="3">⭐⭐⭐ متوسط</option>
+              <option value="2">⭐⭐ ضعیف</option>
+              <option value="1">⭐ خیلی ضعیف</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="reviewComment">نظر:</label>
+            <textarea id="reviewComment" name="comment" required aria-required="true"></textarea>
+          </div>
+          <button type="submit" class="btn" id="submitReviewBtn">ثبت نظر</button>
+        </form>
+      </div>
+
+      <div id="reviewsContainer" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <p>📞 تماس با ما: 09378012212</p>
+    <p>📧 ایمیل: Matinsama30@gmail.com</p>
+    <p>&copy; 2024 KLCFER. تمام حقوق محفوظ است.</p>
+  </footer>
+
+  <!-- Cart Modal -->
+  <div class="modal-backdrop" id="cartModalBackdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="cartModalTitle" id="cart-modal">
+      <header>
+        <h2 id="cartModalTitle">🛒 سبد خرید شما</h2>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="btn" id="emptyCartBtn" type="button">خالی کردن</button>
+          <button class="btn" id="checkoutBtn" type="button">تسویه</button>
+          <button id="closeCartBtn" class="btn" type="button" aria-label="بستن سبد">بستن</button>
+        </div>
+      </header>
+
+      <div class="cart-items" id="cartItemsContainer" aria-live="polite"></div>
+
+      <div class="cart-summary" aria-label="خلاصه سبد">
+        <div class="muted">جمع کل:</div>
+        <div id="cartTotal" style="font-weight:800;font-size:18px;">0 تومان</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <script>
+    /* ---------- Data ---------- */
+    const products = [
+      { id: 1, name: 'دستبند استیل طلایی', category: 'دستبند استیل زنانه', price: 290000, image: '💛', description: 'دستبند  استیل ' },
+      { id: 2, name: 'گردنبند استیل', category: 'گردنبند زنانه', price: 230000, image: '⛓️', description: 'گردنبند استیل' },
+      { id: 3, name: 'انگشتر الماسی', category: 'انگشتر استیل', price: 300000, image: '💍', description: 'انگشتر استیل' },
+      { id: 4, name: 'پیرسینگ استیل طلایی', category: 'پیرسینگ استیل نقره ای', price: 120000, image: '👂', description: 'پیرسینگ ظریف و خاص' },
+      { id: 5, name: 'دستبند استیل', category: 'دستبند مردانه', price: 180000, image: '⌚', description: 'دستبند مردانه استیل ' },
+      { id: 6, name: ' گردنبند مردانه استیل ', category: ' گردنبند مردانه', price: 250000, image: '🔗', description: 'گردنبند استیل مردانه' },
+      { id: 7, name: 'انگشتر مردانه', category: 'انگشتر مردانه', price: 220000, image: '💎', description: 'انگشتر استیل' },
+      { id: 8, name: 'پیرسینگ نقره', category: 'پیرسینگ مردانه', price: 150000, image: '✨', description: 'پیرسینگ استیل مردانه' }
+    ];
+
+    /* ---------- State (localStorage) ---------- */
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+
+    /* ---------- Helpers ---------- */
+    function formatPrice(number) {
+      if (typeof number !== 'number') number = Number(number) || 0;
+      return new Intl.NumberFormat('fa-IR').format(number) + ' تومان';
+    }
+
+    function saveCart() {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+    function saveReviews() {
+      localStorage.setItem('reviews', JSON.stringify(reviews));
+    }
+
+    /* ---------- Toast (non-blocking) ---------- */
+    const toastContainer = document.getElementById('toast-container');
+    function showToast(message, type = 'default', timeout = 3000) {
+      const t = document.createElement('div');
+      t.className = 'toast' + (type === 'success' ? ' success' : (type === 'error' ? ' error' : ''));
+      t.textContent = message;
+      toastContainer.appendChild(t);
+      setTimeout(() => {
+        t.style.opacity = '0';
+        t.style.transform = 'translateY(8px)';
+      }, timeout - 300);
+      setTimeout(() => t.remove(), timeout);
+    }
+
+    /* ---------- Products Rendering (DOM API for safety) ---------- */
+    const productsContainer = document.getElementById('productsContainer');
+    function displayProducts(productsToShow = products) {
+      productsContainer.innerHTML = '';
+      productsToShow.forEach(product => {
+        const card = document.createElement('article');
+        card.className = 'product-card';
+        card.setAttribute('aria-labelledby', 'product-' + product.id + '-name');
+
+        const img = document.createElement('div');
+        img.className = 'product-image';
+        img.setAttribute('aria-hidden', 'true');
+        img.textContent = product.image;
+
+        const info = document.createElement('div');
+        info.className = 'product-info';
+
+        const name = document.createElement('div');
+        name.className = 'product-name';
+        name.id = 'product-' + product.id + '-name';
+        name.textContent = product.name;
+
+        const cat = document.createElement('div');
+        cat.className = 'product-category';
+        cat.textContent = product.category;
+
+        const desc = document.createElement('div');
+        desc.className = 'product-description';
+        desc.textContent = product.description;
+
+        const footer = document.createElement('div');
+        footer.className = 'product-footer';
+
+        const price = document.createElement('div');
+        price.className = 'product-price';
+        price.textContent = formatPrice(product.price);
+
+        const btn = document.createElement('button');
+        btn.className = 'product-btn';
+        btn.type = 'button';
+        btn.textContent = 'افزودن به سبد';
+        btn.addEventListener('click', () => addToCart(product.id));
+
+        footer.appendChild(price);
+        footer.appendChild(btn);
+
+        info.appendChild(name);
+        info.appendChild(cat);
+        info.appendChild(desc);
+        info.appendChild(footer);
+
+        card.appendChild(img);
+        card.appendChild(info);
+
+        productsContainer.appendChild(card);
+      });
+    }
+
+    /* ---------- Categories rendering + delegation ---------- */
+    const categoryGrid = document.getElementById('categoryGrid');
+    function getUniqueCategories() {
+      return [...new Set(products.map(p => p.category))];
+    }
+    function displayCategories() {
+      categoryGrid.innerHTML = '';
+      getUniqueCategories().forEach(cat => {
+        const card = document.createElement('button');
+        card.className = 'category-card';
+        card.type = 'button';
+        card.setAttribute('data-category', cat);
+        card.textContent = cat;
+        card.addEventListener('click', () => {
+          filterByCategory(cat);
+        });
+        categoryGrid.appendChild(card);
+      });
+
+      // add "همه" button
+      const allBtn = document.createElement('button');
+      allBtn.className = 'category-card';
+      allBtn.type = 'button';
+      allBtn.textContent = 'همه';
+      allBtn.addEventListener('click', () => {
+        displayProducts();
+        document.getElementById('products').scrollIntoView({behavior: 'smooth'});
+      });
+      categoryGrid.prepend(allBtn);
+    }
+
+    /* ---------- Filter by category ---------- */
+    function filterByCategory(category) {
+      const filtered = products.filter(p => p.category === category);
+      displayProducts(filtered);
+      document.getElementById('products').scrollIntoView({behavior: 'smooth'});
+    }
+
+    /* ---------- Cart logic & Modal ---------- */
+    const cartCountElem = document.getElementById('cart-count');
+    const cartModalBackdrop = document.getElementById('cartModalBackdrop');
+    const cartItemsContainer = document.getElementById('cartItemsContainer');
+    const cartTotalElem = document.getElementById('cartTotal');
+    const openCartBtn = document.getElementById('open-cart-btn');
+    const closeCartBtn = document.getElementById('closeCartBtn');
+    const emptyCartBtn = document.getElementById('emptyCartBtn');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+
+    function updateCartCount() {
+      const count = cart.reduce((s, it) => s + (it.quantity || 0), 0);
+      cartCountElem.textContent = count;
+      cartCountElem.setAttribute('aria-hidden', count === 0 ? 'true' : 'false');
+    }
+
+    function renderCartItems() {
+      cartItemsContainer.innerHTML = '';
+      if (cart.length === 0) {
+        const p = document.createElement('div');
+        p.className = 'muted';
+        p.textContent = 'سبد شما خالی است.';
+        cartItemsContainer.appendChild(p);
+        cartTotalElem.textContent = formatPrice(0);
+        return;
+      }
+
+      cart.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.setAttribute('data-id', item.id);
+
+        const img = document.createElement('div');
+        img.style.fontSize = '28px';
+        img.textContent = item.image || '';
+        img.setAttribute('aria-hidden', 'true');
+
+        const info = document.createElement('div');
+        info.className = 'ci-info';
+        const name = document.createElement('div');
+        name.textContent = item.name;
+        name.style.fontWeight = '700';
+        const price = document.createElement('div');
+        price.className = 'muted';
+        price.textContent = formatPrice(item.price);
+
+        info.appendChild(name);
+        info.appendChild(price);
+
+        const controls = document.createElement('div');
+        controls.className = 'ci-controls';
+        const minus = document.createElement('button');
+        minus.className = 'qty-btn';
+        minus.type = 'button';
+        minus.ariaLabel = 'کاهش تعداد';
+        minus.textContent = '-';
+        minus.addEventListener('click', () => changeQuantity(item.id, item.quantity - 1));
+
+        const qty = document.createElement('div');
+        qty.textContent = item.quantity;
+        qty.style.minWidth = '28px';
+        qty.style.textAlign = 'center';
+
+        const plus = document.createElement('button');
+        plus.className = 'qty-btn';
+        plus.type = 'button';
+        plus.textContent = '+';
+        plus.addEventListener('click', () => changeQuantity(item.id, item.quantity + 1));
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'qty-btn';
+        removeBtn.type = 'button';
+        removeBtn.textContent = 'حذف';
+        removeBtn.addEventListener('click', () => removeFromCart(item.id));
+
+        controls.appendChild(minus);
+        controls.appendChild(qty);
+        controls.appendChild(plus);
+        controls.appendChild(removeBtn);
+
+        div.appendChild(img);
+        div.appendChild(info);
+        div.appendChild(controls);
+
+        cartItemsContainer.appendChild(div);
+      });
+
+      const total = cart.reduce((s, it) => s + (it.price * (it.quantity || 0)), 0);
+      cartTotalElem.textContent = formatPrice(total);
+    }
+
+    function changeQuantity(productId, newQty) {
+      const idx = cart.findIndex(c => c.id === productId);
+      if (idx === -1) return;
+      if (newQty <= 0) {
+        cart.splice(idx, 1);
+        showToast('آیتم از سبد حذف شد', 'success');
+      } else {
+        cart[idx].quantity = newQty;
+      }
+      saveCart();
+      updateCartCount();
+      renderCartItems();
+    }
+    function removeFromCart(productId) {
+      cart = cart.filter(it => it.id !== productId);
+      saveCart();
+      updateCartCount();
+      renderCartItems();
+      showToast('آیتم حذف شد', 'success');
+    }
+
+    function addToCart(productId) {
+      const product = products.find(p => p.id === productId);
+      if (!product) return showToast('محصول پیدا نشد', 'error');
+      const existing = cart.find(it => it.id === productId);
+      if (existing) existing.quantity += 1;
+      else cart.push({...product, quantity:1});
+      saveCart();
+      updateCartCount();
+      showToast(product.name + ' به سبد خرید اضافه شد', 'success');
+    }
+
+    function openCartModal() {
+      cartModalBackdrop.classList.add('open');
+      cartModalBackdrop.setAttribute('aria-hidden', 'false');
+      renderCartItems();
+      closeCartBtn.focus();
+    }
+    function closeCartModal() {
+      cartModalBackdrop.classList.remove('open');
+      cartModalBackdrop.setAttribute('aria-hidden', 'true');
+      openCartBtn.focus();
+    }
+
+    emptyCartBtn.addEventListener('click', () => {
+      if (cart.length === 0) {
+        showToast('سبد در حال حاضر خالی است', 'default');
+        return;
+      }
+      cart = [];
+      saveCart();
+      updateCartCount();
+      renderCartItems();
+      showToast('سبد خالی شد', 'success');
+    });
+
+    checkoutBtn.addEventListener('click', () => {
+      if (cart.length === 0) {
+        showToast('سبد خالی است', 'default');
+        return;
+      }
+      const total = cart.reduce((s, it) => s + (it.price * it.quantity), 0);
+      cart = [];
+      saveCart();
+      updateCartCount();
+      renderCartItems();
+      showToast('تسویه با موفقیت انجام شد — ' + formatPrice(total), 'success', 5000);
+      closeCartModal();
+    });
+
+    openCartBtn.addEventListener('click', openCartModal);
+    closeCartBtn.addEventListener('click', closeCartModal);
+    cartModalBackdrop.addEventListener('click', (e) => {
+      if (e.target === cartModalBackdrop) closeCartModal();
+    });
+
+    /* ---------- Reviews (secure rendering) ---------- */
+    const reviewsContainer = document.getElementById('reviewsContainer');
+    const reviewForm = document.getElementById('reviewForm');
+    const submitReviewBtn = document.getElementById('submitReviewBtn');
+
+    function isEmailValid(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function displayReviews() {
+      reviewsContainer.innerHTML = '';
+      if (!Array.isArray(reviews) || reviews.length === 0) {
+        const p = document.createElement('div');
+        p.className = 'muted';
+        p.textContent = 'هنوز نظری ثبت نشده است.';
+        reviewsContainer.appendChild(p);
+        return;
+      }
+      reviews.forEach(review => {
+        const item = document.createElement('div');
+        item.className = 'review-item';
+
+        const header = document.createElement('div');
+        header.className = 'review-header';
+        const author = document.createElement('div');
+        author.className = 'review-author';
+        author.textContent = review.name || 'کاربر';
+        const rating = document.createElement('div');
+        rating.className = 'review-rating';
+        rating.textContent = '★'.repeat(Math.max(0, Math.min(5, Number(review.rating || 0))));
+
+        header.appendChild(author);
+        header.appendChild(rating);
+
+        const text = document.createElement('div');
+        text.className = 'review-text';
+        text.textContent = review.comment || '';
+
+        const date = document.createElement('div');
+        date.className = 'review-date';
+        date.textContent = review.date || '';
+
+        item.appendChild(header);
+        item.appendChild(text);
+        item.appendChild(date);
+
+        reviewsContainer.appendChild(item);
+      });
+    }
+
+    reviewForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('reviewName').value.trim();
+      const email = document.getElementById('reviewEmail').value.trim();
+      const rating = document.getElementById('reviewRating').value;
+      const comment = document.getElementById('reviewComment').value.trim();
+
+      if (!name || !email || !rating || !comment) {
+        showToast('لطفاً همهٔ فیلدها را پر کنید', 'error');
+        return;
+      }
+      if (!isEmailValid(email)) {
+        showToast('ایمیل نامعتبر است', 'error');
+        return;
+      }
+
+      submitReviewBtn.disabled = true;
+      setTimeout(() => submitReviewBtn.disabled = false, 1200);
+
+      const review = {
+        id: Date.now(),
+        name,
+        email,
+        rating,
+        comment,
+        date: new Date().toLocaleDateString('fa-IR')
+      };
+
+      reviews.unshift(review);
+      saveReviews();
+      reviewForm.reset();
+      displayReviews();
+      showToast('نظر شما با موفقیت ثبت شد!', 'success');
+    });
+
+    /* ---------- Initial setup ---------- */
+    document.getElementById('go-to-products-btn').addEventListener('click', () => {
+      document.getElementById('products').scrollIntoView({behavior:'smooth'});
+    });
+
+    displayCategories();
+    displayProducts();
+    displayReviews();
+    updateCartCount();
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && cartModalBackdrop.classList.contains('open')) {
+        closeCartModal();
+      }
+    });
+
+    window.__KLCFER = {
+      getCart: () => cart,
+      getReviews: () => reviews
+    };
+  </script>
+</body>
+</html>
